@@ -1,0 +1,26 @@
+/* Chiptune.com style for QDFS V0.7, hacked on 07/12/2005 */
+
+/*#393008*/
+/*#8C825A*/
+/*#635931*/
+
+BODY{margin:0;}
+
+A,TEXTAREA,INPUT,PRE,BODY{
+	border:0;
+	font-family:Fixedsys,System,Terminal,Courier,monospace;
+	text-decoration:none;color:white;font-size:12px;
+}
+
+INPUT,PRE,BODY,TEXTAREA{
+	background:#7D7D7D fixed url("http://www.chiptune.com/gfx/bgd.png");
+}
+
+
+A:hover{background-color:#FFFFFF;color:#555555;}
+
+
+#HEADER{
+	top:0;right:0;width:'100%';height:65;border:1;
+	background:#635931 url("http://chiptune.com/gfx/bdr34.png");
+}

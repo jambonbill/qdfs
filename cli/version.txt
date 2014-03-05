@@ -1,0 +1,55 @@
+Quick&Dirty File System v0.008<BR>Copyleft 1979-20?? Mylgd Corp.
+RELEASED : 20/01/2006 07:19:03
+
+# MODIFY THIS FILE WILL BREAK THE UPDATE MECHANISM
+# PLEASE DONT :) OR USE -> # 
+#
+# http://qdfs.free.fr FOR LATEST RELEASE
+# MAIL TO bill /\T parishq |)ot net FOR INFO
+#
+# COURTESY OF BILL
+
+# TREE :
+# -------------------------------------
+/index.php	32	[redirection]
+/version.txt	1717	[version file]
+/install.php	8661	[update script]
+/f_command.php	30714	[main functions]
+/exec.php	1509	[cli parser]
+/cmds.inc	2379	[commands]
+/config.php	3715	[not really a config file]
+/connect.php	925	[connexion]
+/download.php	180	[download handling]
+/class.download.inc	8754	[class.download.inc]
+/main.php	1775	[main template]
+/navig.php	3685	[default navigation]
+/password.php	763	[password handling]
+/locate.php	1674	[locate func]
+/phpfiglet_class.php	3665	 [figlet generator]
+/style.php	371	[style handling]
+/view.php	6571	[picture viewer]
+/view.js	1814	[picture viewer]
+/thumbnail.php	3742	[thumbnail generation class]
+/THUMB.png	1139	[thumbnail picture]
+/totalsize.php	1186	[disk free]
+/xhr.js	503	[javascript]
+/cmds.js	3542	[javascript]
+/edit.js	3939	[text edit]
+/edit.php	5139	[text edit javascript]
+/archive.php	20760	[compression class]
+/css/zin.css	238	[zin98 like telnet style]
+/css/mm.css	243	
+/css/mono.css	420	[old style]
+/css/cmd.css	241	[classic style]
+/css/edit.css	450	[classic style]
+/css/c64.css	238	[commodore style]
+/css/basic.css	238	[amstrad basic style]
+/flf/README.TXT	388	[README]
+/flf/FIGlet.URL	49	[url]
+/hlp/cd.txt	17	[help file]
+/hlp/ls.txt	16	[help file]
+/hlp/clear.txt	17	[help file]
+/hlp/edit.txt	26	[help file]
+/hlp/dir.txt	39	[help file]
+/hlp/help.txt	38	[help file]
+/hlp/style.txt	59	[help file]

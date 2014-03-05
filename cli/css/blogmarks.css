@@ -1,0 +1,22 @@
+/* Blogmarks style for QDFS V0.7, hacked on 07/12/2005 */
+/* http://blogmarks.net/style/bg_header_A3DE38.gif */
+
+/*#HEADER{color:black;top:0;height:32;background:white url("http://blogmarks.net/style/bg_header_A3DE38.gif") top right no-repeat;}*/
+
+
+
+BODY{margin:0;}
+
+A,TEXTAREA,INPUT,PRE,BODY,TD{
+	font-family:Fixedsys,System,Terminal,Courier,monospace;border:0;font-size:12px;text-decoration:none;color:white;
+}
+
+INPUT,PRE,BODY,TEXTAREA{
+	background:#7D7D7D url("http://blogmarks.net/style/fond_degrade.jpg") top left repeat-x;
+	background:#7D7D7D fixed url("http://blogmarks.net/style/background.png") top left repeat-x;
+}
+
+
+A:hover{background-color:#FFFFFF;color:#555555;}
+
+#FOOTER{background-color:white;position:absolute;bottom:0px;height:10px;width:100%;}

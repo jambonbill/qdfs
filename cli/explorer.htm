@@ -1,0 +1,533 @@
+<TITLE>QDFS</TITLE>
+<STYLE>
+A{color:black;text-decoration:none;}
+BODY,TD{font-family:ms shell dlg,Verdana;font-size:12px;margin:0;}
+TD{overflow:hidden;white-space:nowrap;}
+BUTTON{border-width:1;font-size:10px;height:17px;}
+TABLE{border-collapse:collapse;background-color:white;table-layout:fixed;}
+TR{cursor:pointer;}
+INPUT{border-width:0;width:700px;font-size:12px;}
+TEXTAREA{border-width:0;border-left-width:1;}
+.nfo{background-color:#FFFFE7;}
+.small{width:22;height:18;}
+.sel{color:white;background-color:#000084;}
+.wait{cursor:wait;}
+.default{cursor:default;}
+</STYLE>
+<BODY ONLOAD=cd('.') BGCOLOR="#D4D0C8" ONCONTEXTMENU="return false">
+<TABLE WIDTH=100% HEIGHT=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR HEIGHT=16><TD WIDTH=420><IMG SRC="cli/gif/dir.gif" WIDTH=16 HEIGHT=16 ALIGN=ABSMIDDLE>&nbsp;<INPUT NAME=dir ID=dir READONLY STYLE="width:100%"><TD VALIGN=TOP>&nbsp;
+<TR HEIGHT=17><TD WIDTH=420><BUTTON STYLE="width:200" ONCLICK=srt('name')>Name</BUTTON><BUTTON STYLE="width:100" ONCLICK=srt('size')>Size</BUTTON><BUTTON STYLE="width:120" ONCLICK=srt('date')>Date</BUTTON></TD><TD><BUTTON STYLE="width:100%"><SPAN ID=rdm>---</SPAN></BUTTON></TR>
+<TR><TD>
+<DIV ID="main" STYLE="height: 100%; overflow: auto; background-color:white;border:0;"></DIV>
+</TD><TD VALIGN=TOP ID=preview><SPAN STYLE="width: 100%; height: 100%; overflow: auto;" ID=nfo></SPAN></TD></TR>
+</TABLE>
+
+<!--<SCRIPT SRC="cli/xhr.js"></SCRIPT>-->
+<SCRIPT>
+
+var xhr = null;
+if(window.XMLHttpRequest)		xhr = new XMLHttpRequest(); // Firefox
+else if(window.ActiveXObject)	xhr = new ActiveXObject("Microsoft.XMLHTTP");// Internet Explorer
+else {	alert("! XMLHTTPRequest...");}// XMLHttpRequest non supporté par le navigateur
+var xhrstatus=new Array();
+xhrstatus[1]="loading";//début du transfert des données
+xhrstatus[2]="loaded";//données transférées
+xhrstatus[3]="interactive";//les données reçues sont accssibles en partie
+xhrstatus[4]="complete";//ok
+
+var dirs=new Array();
+var fils=new Array();
+var ctrl=false;
+var shift=false;
+
+	
+function edit(){
+	if(fils[select][0]=="d")return;
+	var fn=fils[select][1];
+	alert("edit:"+fn);
+	xhr.open("POST", "cli/explorer.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data ="&action=edit"; 
+	data+="&fn="+fn;
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){
+			alert(xhr.responseText);
+			//document.getElementById("nfo").value=xhr.responseText;
+			eval(xhr.responseText);
+		}
+	}
+	xhr.send(data);
+}
+
+function readme(str){
+
+	//alert("readme("+str+")");
+	document.getElementById("rdm").innerText=str;
+	xhr.open("POST", "cli/explorer.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data ="&action=readme";
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4)document.getElementById("nfo").value=xhr.responseText;
+	}
+	xhr.send(data);
+}
+
+function cd(i){//Change directory
+	//alert("cd("+i+")");
+	document.getElementById("dir").value="Loading...";
+	document.getElementById("nfo").value="";
+	xhr.open("POST", "cli/explorer.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data ="&action=cd";
+	//if(!i)i=".";
+	if(i==".")data+="&dir=.";
+	else if(i=="..")data+="&dir=..";
+	else data+="&dir="+fils[i][1];
+	document.body.className="wait";
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){	
+			eval(xhr.responseText);
+			document.body.className="default";
+		}
+	}
+	xhr.send(data);
+}
+
+//var backsel="";
+
+function clr(){
+	if(select.length==0)return;
+	//document.getElementById("f"+select[0]).className='';
+	for(z=0;z<select.length;z++){	document.getElementById("f"+select[z]).className='';	}
+}
+
+function plop(num){//deselection
+	//alert("pop("+num+")");
+	var op=new Array();
+	var y=0
+	for(z=0;z<select.length;z++){
+		if(select[z]==num){
+			document.getElementById("f"+num).className='';
+		}else{
+			op[y]=select[z];
+			y++;
+		}
+	}
+	select=op;
+}
+
+function is_in(num){
+	for(z=0;z<select.length;z++)if(select[z]==num)return true;
+	return false;
+}
+
+
+var lastsel;//last selection (shift)
+var select=new Array();
+
+function selectall(){
+	for(z=0;z<fils.length;z++){
+		select[z]=z;
+		document.getElementById("f"+z).className='sel';
+	}
+}
+
+function sel(i){
+	//var ctrl=event.ctrlKey;
+	//var shift=event.shiftKey;
+	if(ctrl){
+		//window.status="ctrl";
+		if(is_in(i)){
+			plop(i);
+			return;
+		}
+	}else if(shift){
+		//alert("shift from "+lastsel+" to "+i);
+		//window.status="shift from "+lastsel+" to "+i;
+		if(i>lastsel){var a=lastsel;var b=i;}else{var b=lastsel;var a=i;}
+		for(var z=a;z<=b;z++){
+			if(is_in(z)){
+				//
+			}else{
+				select[select.length]=z;
+			}
+			document.getElementById("f"+z).className='sel';
+		}
+		return;
+	}else{
+		clr();
+	}
+
+	lastsel=i;
+	
+
+	
+	if(i<0)i=0;
+	if(i>fils.length-1)i=fils.length-1;
+	var id="f"+i;
+	//if(backsel)document.getElementById(backsel).className='';
+	document.getElementById(id).className='sel';
+	//backsel=id;
+
+	if(!ctrl)select=new Array();
+	select[select.length]=i;
+	
+	window.status=fils[select][1];
+
+	//auto scroll
+	var scroll=document.getElementById("main").scrollTop;
+	var height=document.getElementById("main").offsetHeight;
+	var max=scroll+height;
+	if(i*18<scroll)document.getElementById("main").scrollTop=(i*18);//up
+	if((i+1)*18>max)document.getElementById("main").scrollTop=((i+1)*18)-height;//dn
+	document.body.scroll="NO";
+}
+
+function build(){
+	backsel="";
+	htm="<TABLE BORDER=0 ONSELECTSTART='return false' WIDTH=100%>";
+	for(i=0;i<fils.length;i++){
+		if(fils[i][0]=='d'){
+			var icon="<IMG SRC=cli/gif/dir.gif ALIGN=ABSMIDDLE HEIGHT=16>";
+		}else{
+			var xt=ext(fils[i][1]);
+			if(ico[xt]){
+				var icon="<IMG SRC=cli/gif/"+ico[xt]+" ALIGN=ABSMIDDLE HEIGHT=16>";
+			}else{
+				var icon="<IMG SRC=cli/gif/file.gif ALIGN=ABSMIDDLE HEIGHT=16>";
+			}			
+		}
+		htm+="<TR ID=f"+i+" ONMOUSEDOWN=sel("+i+"); ONDBLCLICK=opn("+i+") TITLE="+fils[i][1]+"><TD WIDTH=198><NOBR>"+icon+fils[i][1]+"</TD>";
+		htm+="<TD WIDTH=98 ALIGN=RIGHT>"+fsize(fils[i][2]);
+		htm+="<TD ALIGN=CENTER>"+date(fils[i][3]);
+		htm+="</TR>\n";
+	}
+	htm+="</TABLE>";
+	printe(htm);
+	select=new Array();
+	sel(0);
+}
+
+function show(i){//click file
+	window.status=fils[i][1];
+	//alert(i);
+}
+
+function fsize(num){
+	if(num<1)return "";
+	if(num>1023){
+		var size=Math.round((num*1)/1024);
+		return size	+" Ko";
+	}
+	return num+".b";
+}
+
+function printe(html){//bug ie ???
+	//alert("print "+htm);
+	document.getElementById("main").scrollTop=0;
+	document.getElementById("main").innerHTML=html;
+}
+
+function preview(i){
+	var fn=fils[i][1];
+	xhr.open("POST", "cli/explorer.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data ="&action=preview";
+	data+="&fn="+fn;
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){
+			//alert(xhr.responseText);
+			document.getElementById("nfo").innerHTML=xhr.responseText;
+		}
+	}
+	xhr.send(data);
+}
+
+
+function mkdir(){//Create directory
+	xhr.open("POST", "cli/explorer.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	var nn=prompt("Set new directory name :","new");
+	if(!nn)return;
+	data ="&action=mkdir";
+	data+="&nn="+nn;
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4)eval(xhr.responseText);
+	}
+	xhr.send(data);
+}
+
+function rename(){
+	var fn=fils[select[0]][1];
+	var nn=prompt("Rename "+fn+" to :",fn);
+	if(!nn)return;
+	if(nn==fn)return;
+
+	xhr.open("POST", "cli/explorer.php?r="+Math.random(), true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data="&action=rename";
+	data+="&fn="+fn;
+	data+="&nn="+nn;
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){	
+			//alert(xhr.responseText);
+			eval(xhr.responseText);
+		}
+	}
+	xhr.send(data);
+}
+
+function date(num){
+	var y=num.substr(0,4);
+	var m=num.substr(4,2);
+	var d=num.substr(6,2);
+	var h=num.substr(8,2);
+	var i=num.substr(10,2);
+	return d+"/"+m+"/"+y+" "+h+":"+i;
+}
+
+function del(){
+	//alert("delete:"+select);return;
+	
+	//var type=fils[select][0];
+	//var fn=fils[select][1];
+
+	if(!confirm("Delete "+select.length+" files ?"))return;
+	
+	//alert("delete ok");
+	xhr.open("POST", "cli/explorer.php?r="+Math.random(), true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data="&action=delete";
+	for(z=0;z<select.length;z++){
+		if(fils[select[z]][0]=="f")data+="&fn[]="+fils[select[z]][1];//files
+		else data+="&dn[]="+fils[select[z]][1];//folders
+	}
+	
+	//alert(data);return;
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){	
+			//alert(xhr.responseText);
+			eval(xhr.responseText);
+		}
+	}
+	xhr.send(data);
+}
+
+function opn(i){
+	//alert("opn("+i+")\n"+fils[i]);
+	if(fils[i][0]=="d"){//dir
+		cd(i);
+	}else{//file
+		//pop(i);
+		preview(i);
+	}
+}
+
+function ext(fn){//return file extension
+	var f=fn.split(".");
+	return f[f.length-1].toLowerCase();
+}
+
+function kill(){
+	if(!confirm("Close explorer ?"))return;
+	xhr.open("POST", "cli/explorer.php?r="+Math.random(), true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data="&action=kill";
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){	
+			//alert(xhr.responseText);
+			eval(xhr.responseText);
+		}
+	}
+	xhr.send(data);
+}
+
+function upload(){window.open("cli/upload.php","upload","toolbar=0,width=320,height=160");}
+
+function wget(){
+	var fn=prompt("wget [url]","");
+	if(!fn)return;
+	//alert("wget:"+fn);return;
+	xhr.open("POST", "cli/explorer.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data ="&action=wget";
+	data+="&fn="+fn;
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){
+			//alert(xhr.responseText);
+			eval(xhr.responseText);
+		}
+	}
+	xhr.send(data);
+}
+
+function pgup(){return;}
+function pgdn(){return;}
+
+function kup(e){
+	var n; var e;
+	if (document.all){ //ie 
+		e = window.event;
+		n = e.keyCode;
+	}else if (document.layers) { 
+		n = e.which; 
+	}else{
+		n = e.which; 
+	}
+
+	ctrl=e.ctrlKey;
+	shift=e.shiftKey;
+	switch (n){
+		case 27:kill();break;//esc
+		case 33:pgup();break;
+		case 34:pgdn();break;
+		case 46:
+			del();
+			break;//suppr
+		case 59://backspace (marche pas)
+			e=false;
+			cd(0);
+			return false;
+			break;//back
+		case 69:edit();break;//E (edit)
+		case 76:login();break;//L (login)
+		case 77:move();break;//M (move file)
+		case 85:upload();break;//U (upload)
+		case 87:wget();break;//W (wget)
+		case 107:mkdir();break;//+ MKDIR
+		case 113:rename();break;//F2 (rename)
+	}	
+	//window.status=n;
+	return false;
+}
+
+
+function move(){
+
+	//alert("move");
+	
+	var target=prompt("Move "+select.length+" files to :","/");
+	if(!target)return;
+
+	xhr.open("POST", "cli/explorer.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data ="&action=move";
+	data+="&target="+target;
+
+	for(z=0;z<select.length;z++){
+		if(fils[select[z]][0]=="f")data+="&fn[]="+fils[select[z]][1];//files
+		else data+="&dn[]="+fils[select[z]][1];//folders
+	}
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){
+			//alert(xhr.responseText);
+			eval(xhr.responseText);
+		}
+	}
+	xhr.send(data);
+
+}
+
+
+function login(){
+	var login=prompt("Login","");
+	xhr.open("POST", "cli/explorer.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	data ="&action=login";
+	data+="&login="+login;
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4){
+			//alert(xhr.responseText);
+			eval(xhr.responseText);
+		}
+	}
+	xhr.send(data);
+}
+
+function kdn(e){
+	var n; var e;
+	if (document.all){ //ie 
+		e = window.event;
+		n = e.keyCode;
+	}else if (document.layers) { 
+		n = e.which; 
+	}else{
+		n = e.which; 
+	}
+	ctrl=e.ctrlKey;
+	shift=e.shiftKey;
+
+	switch (n){
+		case 8:cd("..");break;//backspace
+		case 13:opn(select[0]);break;//return
+		//case 32:test();break;//space
+		case 38:sel(select[0]-1);break;//up
+		case 40:sel(select[0]+1);break;//dwn
+		case 65:selectall();break;//A
+	}	
+	//window.status=n;
+	return false;
+}
+
+//document.onhelp = alert("QDFS Explorer V1");
+document.onkeyup = kup;
+document.onkeydown = kdn;
+document.body.scroll="no";
+
+// SELECTION
+function disableSelection(element) {
+    element.onselectstart = function(){return false;};
+    element.unselectable = "on";
+    element.style.MozUserSelect = "none";
+}
+disableSelection(document.getElementById("main"));
+
+// TRIS //////////////////////////
+function nsort(a,b){return (a-b);}
+function asort(a,b){
+	a=a.toLowerCase();
+	b=b.toLowerCase();
+	if(a<b)return -1;
+	if(a>b)return 1;
+	return 0;
+}
+function a_s(a,b){return asort(a[1],b[1]);}//name
+function b_s(a,b){return nsort(a[2],b[2]);}//size
+function c_s(a,b){return nsort(a[3],b[3]);}//date
+var lsort;
+function srt(nam){
+	if(nam==lsort){
+		fils.reverse();
+		build();
+		return;
+	}
+	switch(nam){
+		case "name":fils.sort(a_s);break;//by name
+		case "size":fils.sort(b_s);break;//by size
+		case "date":fils.sort(c_s);break;//by date
+		default :alert("sort error :"+nam);break;
+	}
+	build();
+	lsort=nam;
+}
+
+// ICONS ///////////
+var ico=new Array();
+ico["doc"]="word.gif";
+ico["gif"]="gif.gif";
+ico["htm"]=ico["html"]="htm.gif";
+ico["jpg"]=ico["jpeg"]="jpg.gif";
+ico["js"]="js.gif";
+ico["mp3"]=ico["ogg"]=ico["mid"]=ico["mod"]=ico["xm"]=ico["wav"]="mp3.gif";
+ico["pdf"]="pdf.gif";
+ico["php"]="php.gif";
+ico["png"]="png.gif";
+ico["txt"]="txt.gif";
+ico["url"]="ie.gif";
+ico["xls"]="xls.gif";
+ico["xml"]="xml.gif";
+ico["zip"]=ico["rar"]=ico["tar"]=ico["gz"]="zip.gif";
+</SCRIPT>

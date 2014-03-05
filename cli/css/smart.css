@@ -1,0 +1,19 @@
+/* Smart style for QDFS V0.7, hacked on 15/12/2005 */
+
+A,TEXTAREA,INPUT,PRE,BODY{
+	font-family:Fixedsys,System,Terminal,Courier,monospace;border:0;font-size:12px;text-decoration:none;color:#400000;
+}
+
+A:hover{background-color:#400000;color:#CEC384;}
+
+
+
+
+INPUT,PRE,BODY,TEXTAREA{
+	background-color:#CEC384;	background:fixed url("http://pixel.nascimpact.com/images/background.gif");
+}
+
+
+
+#LOGO{}
+#FOOTER{}

@@ -1,0 +1,15 @@
+/* Chuchu rocket style for QDFS V0.7, hacked on 07/01/2006 */
+
+BODY{margin:10;}
+
+A,TEXTAREA,INPUT,PRE,BODY,TD{
+	font-family:Fixedsys,System,Terminal,Courier,monospace;border:0;font-size:12px;text-decoration:none;color:black;
+}
+
+INPUT,PRE,BODY,TEXTAREA{
+	background:black url("http://chuchu.japanim.net/wall/wall6.jpg") top left repeat-x;
+	background:black fixed url("http://chuchu.japanim.net/wall/wall6.jpg") top left repeat-x;
+}
+
+
+A:hover{background-color:#000000;color:#FFCC00;}

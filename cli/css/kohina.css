@@ -1,0 +1,11 @@
+/* Kohina style for QDFS V0.7, hacked on 07/12/2005 */
+
+A,TEXTAREA,INPUT,PRE,BODY{
+	font-family:Fixedsys,System,Terminal,Courier,monospace;border:0;font-size:12px;text-decoration:none;color:#00FF00;
+background-color:#000000;
+background:fixed url("http://qdfs.free.fr/gif/kohina.gif");
+}
+
+A:hover{background-color:#00FF00;color:red;}
+
+

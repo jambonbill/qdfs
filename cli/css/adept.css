@@ -1,0 +1,12 @@
+/* Adept style for QDFS V0.7, hacked on 07/12/2005 */
+/* http://www.adept-vormgeving.com/splashgifsnieuw/splashback.gif */ 
+
+A,TEXTAREA,INPUT,PRE,BODY{
+	font-family:Fixedsys,System,Terminal,Courier,monospace;
+border:0;font-size:12px;text-decoration:none;color:white;
+}
+
+A:hover{background-color:#FFFFFF;color:#3969A5;}
+
+INPUT{background-color:#3969A5;}
+BODY{background-color:#3969A5;	background:url("http://www.adept-vormgeving.com/splashgifsnieuw/splashback.gif");}

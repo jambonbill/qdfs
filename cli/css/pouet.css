@@ -1,0 +1,29 @@
+/* Pouet.net style for QDFS V0.7, hacked on 07/12/2005 */
+
+a,textarea,input,pre,body{
+	font-family:Fixedsys,System,Terminal,Courier,monospace;
+	border:0;
+	font-size:16px;text-decoration:none;color:white;
+}
+
+a:hover{background-color:#FFFFFF;color:#3969A5;}
+
+
+input{background-color:#3969A5;}
+
+input,pre,body,textarea{
+	background-color:#3969A5;
+	background:fixed url("http://www.pouet.net/gfx/trumpet.gif");
+}
+
+
+#LOGO{
+	width:500;height:100;
+	background:url("http://www.pouet.net/gfx/logos/raist1.gif");
+}
+
+#FOOTER{
+	width:50;height:100;background-color:red;
+}
+
+/* pouetcolor{background:#3969A5} */

@@ -1,0 +1,8 @@
+TEXTAREA,INPUT,PRE,BODY{
+	font-family:Fixedsys,System,Terminal,Courier;monospace;border:0;
+	font-size:12px;
+	color:#000000;background-color:#FFFFFF;}
+
+A{	color:red;text-decoration:none;}
+
+A:hover{background-color:#000000;color:#FFFFFF;}

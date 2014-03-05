@@ -1,0 +1,18 @@
+
+textarea,input,pre,body{
+	font-family:Fixedsys,System,Terminal,Courier,monospace;
+	border:0;
+	font-size:16px;
+	color:#CCCCCC;
+	background-color:black;
+}
+
+a{	
+	color:#CCCCCC;
+	text-decoration:none;
+}
+
+a:hover{
+	background-color:#DDDDDD;
+	color:#000000;
+}

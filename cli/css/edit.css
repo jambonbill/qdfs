@@ -1,0 +1,10 @@
+.a{color:#AAAAAA;background:#000000;}
+.b{color:#000000;background:#CCCCCC;}
+TD,A,INPUT,TEXTAREA{font-family:fixedsys,courier;border:0;text-decoration:none;}
+TEXTAREA{color:#CCCCCC;background:#000000}
+INPUT{color:#000000;background:#FFFFFF}
+BODY{background-color:black;color:#AAAAAA}
+.i{font-style: italic;}
+.bright{background:#FFFFFF}
+A{text-decoration:none;color:#DDDDDD}
+A:hover{text-decoration:none;color:#000000;background-color:#FFFFFF}
