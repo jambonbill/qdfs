@@ -999,7 +999,7 @@ function play()
         return "call : play musicfile(s) \n\nLoad/stream music via winamp style playlist (.m3u)\n";
     } else {//ok
         $mf=grab($args[0]);//music files
-        $m3u=array();
+        
         if (count($mf["file"])==0) {
             return "0 file like $args[0]";
         }
@@ -1012,32 +1012,32 @@ function play()
         $burl=$o[1];//clean basurl
         //echo "<li>$burl\n";//clean basurl
 
-
+        $m3u=array();
         $m3u[]="#EXTM3U\n";//M3U HEADER
-       
+        $i=0;
+
         foreach ($mf["file"] as $file) {
             //echo $v;
             $i++;
-            $m3u[]="#EXTINF:$i,$file\n";
-            $m3u[]=str_replace(" ", "%20", $burl."$dir/$file\n");
-            $out.="\"$file\" added\n";
+            $m3u[]="#EXTINF:$i,$file";
+            $m3u[]=str_replace(" ", "%20", $burl."$dir/$file");
         }
 
-        $fo=fopen("cli/tmp/tmp.m3u", "w+") or die("error:");//return "error : failed to create m3u";
-        fwrite($fo, implode($m3u));
-        fclose($fo);
-
-        if (!copy("cli/tmp/tmp.m3u", $_SESSION["rep"]."/tmp.m3u")) {
-            echo "error : !copy\n";
+        $tmpfile="./tmp.m3u";
+        $fo = fopen($tmpfile, "w+");//return "error : failed to create m3u";
+        
+        if ($fo) {
+            fwrite($fo, implode("\n",$m3u));
+            fclose($fo);
         } else {
-            echo "file tmp copied ;)";
+            echo "Error opening $tmpfile\n";
         }
-
-        //echo implode($m3u);//DEBUG
+        
+        $out=implode("\n", $m3u);
         
         //beurk
-        echo "<iframe src=\"cli/tmp/tmp.m3u\" style=\"display:none;width:100;height:80\">cli/tmp/tmp.m3u</IFRAME>\n";//discrete pop
-        $out.="-------\n<A HREF=\"cli/tmp/tmp.m3u\">tmp.m3u</A>";
+        $out.="\n<a href=$tmpfile>$tmpfile</a>";
+        
         return "$out";
     }
 }

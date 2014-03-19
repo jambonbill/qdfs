@@ -1,0 +1,8 @@
+/vendor
+/composer.phar
+*.png
+*.jpg
+*.zip
+*.bak
+*~
+

@@ -67,4 +67,4 @@ window.status=rep;
 function errorbox(msg, url, linenumber){document.getElementById("debug").innerHTML='Error : '+msg+'<br>URL= '+url+'<br>Line Number= '+linenumber;return true}
 window.onerror=errorbox; 
 </script>
-<script src="<?=$clipath?>/cmds.js"></script>
+<script src="<?=$clipath?>/js/cmds.js"></script>
