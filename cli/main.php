@@ -15,7 +15,7 @@ include "f_command.php";
 <title><?php echo $title?></title>
 </head>
 
-<body topmargin=8 onload="document.form.i.focus();rez();" onresize="rez()" onclick="locat()">
+<body topmargin='8' onload="locat();" onclick="locat()">
 
 <pre>
 <?php

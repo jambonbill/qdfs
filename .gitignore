@@ -1,5 +1,8 @@
 /vendor
 /composer.phar
+*.mp3
+*.m3u
+*.gif
 *.png
 *.jpg
 *.zip

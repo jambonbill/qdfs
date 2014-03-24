@@ -162,21 +162,8 @@ function k(e){
 	return false;
 }
 
+//force input focus
 function locat(){
 	document.form.i.focus();
 	return false;
 }
-
-function rez(){
-//	window.resizeTo(600,500);
-}
-
-
-
-///REGEX !!! :)
-/*
-myString = new String(test);
-rExp = /clipboard/g;
-var results = myString.search(rExp);
-*/
-
