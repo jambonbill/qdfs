@@ -24,7 +24,7 @@ function recursiveDirectory($dir)
 
             if (is_dir($dir.'/'.$file)) {
                 $dirnum++;
-                recursiveDirectory("$dir/$file", $str);
+                recursiveDirectory("$dir/$file");
             }
             
             $size= filesize($dir.'/'.$file);
@@ -32,7 +32,7 @@ function recursiveDirectory($dir)
             $filnum++;
             $lastmod = date("d/m/Y G:i:s ", fileatime($dir.'/'.$file));
             //echo str_replace("//","/","$dir/$file $size\n");
-            $f++;
+            //$f++;
         }
         $dir=preg_replace("/^.[\/][\/]?/", "", $dir)."/";
         $dir=sprintf("% -32s", substr($dir, 0, 32))." ";
@@ -53,8 +53,8 @@ function locate($str)
     if ($str) {
         $data=recursiveDirectory("./");
         echo "--------------------------------------\n";
-        echo "Total Directory numbers : $dirnum\n";
-        echo "Total files : $filnum\n";
+        echo "Total dir. : $dirnum\n";
+        echo "Total files: $filnum\n";
         echo "Total size : ".printsize($totals)."\n";
     } else {
         echo "Error : Type search string.";
