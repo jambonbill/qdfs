@@ -1,9 +1,9 @@
 <?php
-///////////////////////////////////////////////////////
 // Quick&Dirty File System
-// CONFIG.PHP
+// config.php - not really a config script
+
 $fp=realpath("./");
-//ini_set("include_path","./inc");
+//ini_set("include_path","./inc");//safe mode wont allow it
 $inip="./inc/";//ini path
 
 include "password.php";//PASSWORD
@@ -14,11 +14,11 @@ if (!$rpwd) {
 
 
 //SESSIONS
-if(@!$_SESSION["f"])$_SESSION["f"]=Array("./");      //files (auto complete)
+if(@!$_SESSION["f"])$_SESSION["f"]=array("./");      //files (auto complete)
 if(@!$_SESSION["rep"])$_SESSION["rep"]="./";         //path
-if(@!$_SESSION["css"])$_SESSION["css"]=$style;   //default style
+if(@!$_SESSION["css"])$_SESSION["css"]=@$style;   //default style
 if(@!$_SESSION["css"])$_SESSION["css"]="cmd.css";//default style
-if(@!$_SESSION["history"])$_SESSION["history"]=Array();//HIST
+if(@!$_SESSION["history"])$_SESSION["history"]=array();//HIST
 if(@!$_SESSION["info"])@$_SESSION["info"]="";         //system msgs
 if(@!$_SESSION["fr"])$_SESSION["fr"]="1";            //FIRSTRUN 
 
@@ -33,42 +33,20 @@ if (!$title) {
 
 
 if ($_SESSION["fr"]=="1") {//FIRSTRUN //Ajouter les logs ici !!!
-   $logfile="./cli/log/".date("Y_m").".log";
-   touch($logfile);
-   $logstr=date("d/m/Y H:i:s ")." $_SERVER[REMOTE_ADDR]\t:$_SERVER[REMOTE_PORT]\t$_SERVER[HTTP_USER_AGENT]\t$_SERVER[HTTP_REFERER]\n";//strlog
+    
+    $logfile="./cli/log/".date("Y_m").".log";
+    touch($logfile);
+    $logstr=date("d/m/Y H:i:s ")." $_SERVER[REMOTE_ADDR]\t:$_SERVER[REMOTE_PORT]\t$_SERVER[HTTP_USER_AGENT]\t$_SERVER[HTTP_REFERER]\n";//strlog
 
-   $infile=file($logfile);
-   $fo=fopen($logfile, "w");
-   fwrite($fo, $logstr.implode("", $infile));
-   fclose($fo);
-   //browser detection
-  if (preg_match("/\bMSIE\b/i", $_SERVER["HTTP_USER_AGENT"])) {//DETECT IE
-      //      DEPARTMENT OF JUSTICE
-      //       WINNER DON'T USE IE
-      // FEDERAL BUREAU OF INVESTIGATION
-      //        William S. Director, FBI
-      $_SESSION["info"]="You are using 'Internet Explorer', Internet navigation is unsafe with it.<BR>";
-      $_SESSION["info"].="Do you like to upgrade your system to Firefox ? [<A HREF='http://www.mozilla.org/'><FONT COLOR=#00FF00>YES</FONT></A>]";
-  }
-  $_SESSION["fr"]="2";
+    $infile=file($logfile);
+    $fo=fopen($logfile, "w");
+    fwrite($fo, $logstr.implode("", $infile));
+    fclose($fo);
+    
+    $_SESSION["fr"]="2";//??
 }
 
 
-//FIGLET
-if (@$_SESSION["flf"]) {//FIGLET
-   ///////////////////////////////
-   require("phpfiglet_class.php");
-   $phpFiglet = new phpFiglet();
-   if ($phpFiglet->loadFont("./cli/flf/".$_SESSION["flf"])) {
-       echo "<PRE>";
-       $phpFiglet->display($_GET["str"]);
-       echo "</PRE>";
-   } else {
-       trigger_error("Could not load font file");
-   }
-   unset($_SESSION["flf"]);
-   //exit;
-}
 
 
 //UPLOAD
@@ -92,7 +70,7 @@ if (@$_POST["txtfile"]) {
             return;
         }
         $fil=fopen("./$SESSION[rep]/$_POST[newname]", "w ");
-        fwrite($fil,$_POST["txtfile"]);
+        fwrite($fil, $_POST["txtfile"]);
         fclose($fil);
     } else {
         rename("./$SESSION[rep]/$_POST[filename]", "./$SESSION[rep]/$_POST[filename]~");

@@ -1,4 +1,4 @@
-<?
+<?php
 /*******************************************************************************
 ** Title.........: download class                                             **
 ** Summary.......: This class allows to download files with the appropriate   **

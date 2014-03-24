@@ -25,7 +25,7 @@ function README($fn = '')
  * @param  string $fn [description]
  * @return [type]     [description]
  */
-function target( $fn = '')
+function target($fn = '')
 {
     if (!preg_match("/.(\/).?$/i", $fn)) {
         return "target=_blank";
@@ -57,7 +57,7 @@ $glob = glob($_SESSION["rep"] . "/*");
 //print_r($files);
 $files=[];
 $folder=[];
-
+$folder[]="..";//parent
 $totalsize=0;
 
 foreach ($glob as $k => $f) {
